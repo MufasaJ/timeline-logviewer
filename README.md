@@ -3,10 +3,10 @@
 An timeline / log viewer Angular JS project:
 
 + A single page HTML5 web app -- use the dashboard templates provided in this project:  http://qoriolabs.github.io/timeline-logviewer
-+ One page / view in the web app based on the template: ![Dashboard template](/requirements/dashboard_template1.png)
-+ A timeline / log viewer  ![mock](/requirements/mock.png)
-  + Similar to the UI at http://circleci.com or http://travis.com
-  + Display a log (like stderr and stdout) from a server.
++ One page / view in the web app based on the template.
++ A timeline / log viewer
+  + Here is the mock  ![mock](/requirements/mock.png)
+  + For displaying events/ milestones and a log (like stderr and stdout) from a server.
   + The viewer will update itself as new lines arrive from the server.  It's infinitely scrollable.
   + There are two parts:
     + A milestone view: top-level events (on the right) -- this is a timeline of events from top to bottom.  Most recent event is appended at bottom (see first figure).
