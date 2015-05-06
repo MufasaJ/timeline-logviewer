@@ -4,7 +4,7 @@ An timeline / log viewer Angular JS project:
 
 + A single page HTML5 web app -- use the dashboard templates provided in this project
 + One page / view in the web app see figure 1 ![Dashboard template](/requirements/dashboard_template1.png)
-+ A timeline / log viewer
++ A timeline / log viewer  ![mock](/requirements/mock.png)
   + Similar to the UI at http://circleci.com or http://travis.com ![travis](https://travis-ci-org.global.ssl.fastly.net/images/landing-page/laptop-591d440305820f085b038882c820f3fe.png)
   + Display a log (like stderr and stdout) from a server.
   + The viewer will update itself as new lines arrive from the server.  It's infinitely scrollable.
@@ -22,6 +22,7 @@ Special annotation in the string will also cause a new entry added to the milest
 2. Each line represents the output of a process running on a server.  For example we may want to run `ls -al /bin` on the server and there are many lines returned from the stdout.
 3. Each line is rendered in the detailed view, just like a web console / terminal emulator.
 4. Depending on the format of the line, trigger special handling and display events in the milestone view.
+
 For example, a line that looks like 
 
     **** START:MILESTONE 1,This is a milestone **** 
@@ -34,6 +35,13 @@ When a line that looks like
 
 is received, the timestamp is taken and an elapsed time is shown next to the `MILESTONE 1` event in the milestone view.  When another line that has the `****` sequence, a new event is added to the milestone view.
 
+Different character sequences will map to different colors to indicate the level of importance:
+
++ `****` means INFORMATION ==> Use green
++ `????` means WARNING ==> Use orange / yellow
++ `!!!!` means ERROR ==> Use red
+
+We will iterate on the style of the milestone /event object in the milestone/timeline view.
 
 
 
