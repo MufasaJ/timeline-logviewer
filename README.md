@@ -2,10 +2,10 @@
 
 An timeline / log viewer Angular JS project:
 
-+ A single page HTML5 web app -- use the dashboard templates provided in this project
-+ One page / view in the web app see figure 1 ![Dashboard template](/requirements/dashboard_template1.png)
++ A single page HTML5 web app -- use the dashboard templates provided in this project:  http://qoriolabs.github.io/timeline-logviewer
++ One page / view in the web app based on the template: ![Dashboard template](/requirements/dashboard_template1.png)
 + A timeline / log viewer  ![mock](/requirements/mock.png)
-  + Similar to the UI at http://circleci.com or http://travis.com ![travis](https://travis-ci-org.global.ssl.fastly.net/images/landing-page/laptop-591d440305820f085b038882c820f3fe.png)
+  + Similar to the UI at http://circleci.com or http://travis.com
   + Display a log (like stderr and stdout) from a server.
   + The viewer will update itself as new lines arrive from the server.  It's infinitely scrollable.
   + There are two parts:
@@ -43,6 +43,15 @@ Different character sequences will map to different colors to indicate the level
 
 We will iterate on the style of the milestone /event object in the milestone/timeline view.
 
+
+## Simple NodeJS server:
+
+1. This is for this project testing only - not production. 
+2. Deployed somewhere.  I can set up a host.
+3. The source code should be checked into this repository too.
+4. The server should send CORS headers so that the single page web app can work without cross-origin problems.
+4. We will use a test bash script to simulate some process that will write to stdout.   When a URL is requsted,
+the server will execute the process and send the output to the websocket connection for the viewer to render.
 
 
 
