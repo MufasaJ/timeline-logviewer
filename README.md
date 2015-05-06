@@ -37,7 +37,7 @@ is received, the timestamp is taken and an elapsed time is shown next to the `MI
 
 Different character sequences will map to different colors to indicate the level of importance:
 
-+ `****` means INFORMATION ==> Use green
++ `****` means INFORMATION ==> Use blue, as shown in the mock (the blue circle along the timeline)
 + `????` means WARNING ==> Use orange / yellow
 + `!!!!` means ERROR ==> Use red
 
@@ -54,5 +54,10 @@ We will iterate on the style of the milestone /event object in the milestone/tim
 the server will execute the process and send the output to the websocket connection for the viewer to render.
 
 
+## How to Develop
+
+1. You should make changes to the `gh-pages` branch so that we can use github pages to host the app.
+2. Check in the server side code to a `server` branch
+3. Deploy the server somewhere of your choosing.  Contact me if you need hosting.
 
 
