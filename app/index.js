@@ -4,28 +4,32 @@
     var io = require('socket.io')(3000);
     io.serveClient(false);
     //TODO jest problem z timeoutem ponieważ one cały czas
-    // wysyłają dane chociaż sam sockect się rozłączył i przy kolejnym wejściu na stronę nakładają się one wysyłają podwojne dane
+    // wysyłają dane chociaż sam sockect się rozłączył i przy kolejnym wejściu na stronę nakładają się one wysyłają podwojne dane'
+    var timeOut1, timeOut2;
     var index = 1;
     var mockPrimary = {
         data: new Date().getTime(),
         eventName: 'Mock',
         shortDescription: 'Lorem ipsumd',
         detail: 'Details',
-        primary: true
+        primary: true,
+        type:'milestone'
     };
     var mockDanger = {
         data: new Date().getTime(),
         eventName: 'Mock',
         shortDescription: 'Lorem ipsum',
         detail: 'Details',
-        danger: true
+        danger: true,
+        type:'milestone'
     };
     var mockWarning = {
         data: new Date().getTime(),
         eventName: 'Mock',
         shortDescription: 'Lorem ipsum',
         detail: 'Details',
-        warning: true
+        warning: true,
+        type:'milestone'
     };
 
     function mockMileston()
@@ -47,9 +51,9 @@
 
     function sendLogs(socket)
     {
-        setTimeout(function ()
+        timeOut1 = setTimeout(function ()
         {
-            socket.emit('logs', {log: 'Lorem impsum............'});
+            socket.emit('logs', {log: 'Lorem impsum............log'});
             sendLogs(socket);
         }, getRandomInt(500, 1000))
 
@@ -57,7 +61,7 @@
 
     function sendMilestone(socket)
     {
-        setTimeout(function ()
+        timeOut2 = setTimeout(function ()
         {
             index++;
             socket.emit('milestone', mockMileston());
@@ -71,6 +75,8 @@
         sendMilestone(socket);
         socket.on('disconnect', function ()
         {
+            clearTimeout(timeOut1);
+            clearTimeout(timeOut2);
             socket.disconnect();
         });
     });
