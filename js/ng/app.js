@@ -57,6 +57,10 @@ singApp.config(function($stateProvider, $urlRouterProvider){
                     });
             }
         })
+            .state('app.timeLine',{
+                url:'timeLine',
+                templateUrl:'views/time_line.html',controller:'TimeLineCtrl as timeCtrl'
+            })
 
         //separate state for login & error pages
         .state('login', {
