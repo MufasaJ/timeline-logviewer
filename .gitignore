@@ -1,8 +1,11 @@
 # Emacs
 *~
+.idea
+*.iml
+bower_components
+node_modules
 
 .DS_Store
-
 # Compiled Object files
 *.slo
 *.lo

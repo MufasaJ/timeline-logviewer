@@ -3,6 +3,7 @@
 <head>
     <title>Sing - Dashboard</title>
     <link href="css/application.min.css" rel="stylesheet">
+    <link href="css/main.css" rel="stylesheet">
     <!-- as of IE9 cannot parse css files with more that 4K classes separating in two files -->
     <!--[if IE 9]>
         <link href="css/application-ie9-part2.css" rel="stylesheet">
@@ -40,7 +41,7 @@
 <script src="vendor/angular-bootstrap/ui-bootstrap-tpls.min.js"></script>
 <script src="vendor/bootstrap-select/dist/js/bootstrap-select.min.js"></script>
 <script src="vendor/angular-bootstrap-select/build/angular-bootstrap-select.min.js"></script>
-
+<script src="vendor/socket.io-client/socket.io.js"></script>
 <!-- page specific angular libs. may be removed -->
 <script src="vendor/datatables/media/js/jquery.dataTables.js"></script>
 <script src="vendor/angular-datatables/dist/angular-datatables.min.js"></script>
@@ -60,7 +61,9 @@
 <script src="js/ng/app.js"></script>
 <script src="js/ng/controllers.js"></script>
 <script src="js/ng/controllers.demo.js"></script>
+<script src="js/ng/TimeLineCtrl.js"></script>
 <script src="js/ng/services.js"></script>
+<script src="js/ng/SocketIO.js"></script>
 <script src="js/ng/directives.js"></script>
 <script src="js/ng/directives.demo.js"></script>
 
