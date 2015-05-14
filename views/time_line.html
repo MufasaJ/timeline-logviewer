@@ -18,7 +18,7 @@
                     <i class="glyphicon glyphicon-pencil"></i>
                 </span>
                 <section class="event" ng-click="timeCtrl.displayTerminal()">
-                    <span class="time">{{event.data}}</span>
+                    <span class="time">{{event.date | date:'medium'}}</span>
                     <h4 class="event-heading"><a href="#">{{event.eventName}}</a></h4>
 
                     <p class="fs-mini">
