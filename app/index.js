@@ -1,7 +1,7 @@
 (function ()
 {
     'use strict';
-    var io = require('socket.io')(3000);
+    var io = require('socket.io')(process.env.PORT || 3000);
     io.serveClient(false);
     //TODO jest problem z timeoutem ponieważ one cały czas
     // wysyłają dane chociaż sam sockect się rozłączył i przy kolejnym wejściu na stronę nakładają się one wysyłają podwojne dane'
