@@ -27,10 +27,14 @@ angular.module('app.controllers').controller('TimeLineCtrl',
             };
             function addMilestoneAndLogs(data)
             {
-                if (data.type) {
-                    ctrl.displayWhenHideTerminal.unshift(data);
+                if ('*' === data.data.charAt(0)) {
+                    data.primary = true;
+                } else if ('?' === data.data.charAt(0)) {
+                    data.warning = true;
+                } else if ('!' === data.data.charAt(0)) {
+                    data.danger = true;
                 }
-                ctrl.events.unshift(data);
+                ctrl.displayWhenHideTerminal.unshift(data);
             }
 
             function init()
@@ -38,13 +42,7 @@ angular.module('app.controllers').controller('TimeLineCtrl',
                 ListenerSocketIO.setListener('milestone', function (log)
                 {
                     addMilestoneAndLogs(log);
-                    $scope.$apply();
                 });
-                ListenerSocketIO.setListener('logs', function (log)
-                {
-                    addMilestoneAndLogs(log);
-                    $scope.$apply();
-                })
             }
 
             init();

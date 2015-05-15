@@ -5,6 +5,7 @@ var singApp = angular.module('singApp', [
     'ngAnimate',
     'ngStorage',
     'ngResource',
+    'ngWebSocket',
     'ui.router',
     'ui.router.util',
     'ui.jq',
@@ -23,54 +24,60 @@ var singApp = angular.module('singApp', [
     'app.directives'
 ]);
 
-singApp.config(function($stateProvider, $urlRouterProvider){
+singApp.config(function ($stateProvider, $urlRouterProvider)
+{
+
 
     // For any unmatched url, send to /dashboard
     $urlRouterProvider.otherwise("/app/dashboard/");
 
     $stateProvider
-        .state('app', {
-            abstract: true,
-            url: '/app',
-            templateUrl: 'views/app.html'
-        })
+            .state('app', {
+                abstract: true,
+                url: '/app',
+                templateUrl: 'views/app.html'
+            })
 
         // loading page templates dynamically for demo
-        .state('app.page', {
-            url: '/:page/:child',
-            params: {
-                page: {},
-                child: { value: null }
-            },
-            resolve: {
-                deps: ['scriptLoader', function(scriptLoader){
-                    return scriptLoader;
-                }]
-            },
-            templateProvider: function ($http, $stateParams, scriptLoader) {
-                return $http.get('views/' + $stateParams.page + ( /*optional param*/ $stateParams.child ? "_" + $stateParams.child : "") + '.html')
-                    .then(function(response) {
-                        return scriptLoader.loadScriptTagsFromData(response.data);
-                    })
-                    .then(function(responseData){
-                        return responseData;
-                    });
-            }
-        })
-            .state('app.timeLine',{
-                url:'timeLine',
-                templateUrl:'views/time_line.html',controller:'TimeLineCtrl as timeCtrl'
+            .state('app.page', {
+                url: '/:page/:child',
+                params: {
+                    page: {},
+                    child: {value: null}
+                },
+                resolve: {
+                    deps: ['scriptLoader', function (scriptLoader)
+                    {
+                        return scriptLoader;
+                    }]
+                },
+                templateProvider: function ($http, $stateParams, scriptLoader)
+                {
+                    return $http.get('views/' + $stateParams.page + ( /*optional param*/ $stateParams.child ? "_" + $stateParams.child : "") + '.html')
+                            .then(function (response)
+                            {
+                                return scriptLoader.loadScriptTagsFromData(response.data);
+                            })
+                            .then(function (responseData)
+                            {
+                                return responseData;
+                            });
+                }
+            })
+            .state('app.timeLine', {
+                url: 'timeLine',
+                templateUrl: 'views/time_line.html', controller: 'TimeLineCtrl as timeCtrl'
             })
 
         //separate state for login & error pages
-        .state('login', {
-            url: '/login',
-            templateUrl: 'views/login.html'
-        })
-        .state('error', {
-            url: '/error',
-            templateUrl: 'views/error.html'
-        })
+            .state('login', {
+                url: '/login',
+                templateUrl: 'views/login.html'
+            })
+            .state('error', {
+                url: '/error',
+                templateUrl: 'views/error.html'
+            })
 });
 
 singApp.value('uiJqDependencies', {

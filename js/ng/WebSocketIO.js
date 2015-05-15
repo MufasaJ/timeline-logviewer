@@ -1,39 +1,34 @@
 angular.module('app.services').factory('ListenerSocketIO',
-        [function ()
+        ['$websocket', function ($websocket)
         {
-            //TODO: url to server
-            var socket = io.connect('http://timelineserver.herokuapp.com');
-
-
+            var dataStream = $websocket('ws://localhost:3000');
             var listeners = {};
 
             function setListener(listenerName, callback)
             {
                 listeners[listenerName] = callback;
-                socket.on(listenerName, function (data)
+                dataStream.onMessage(function (message)
                 {
-                    callback(data)
+                    console.log(message.data);
+                    callback(message)
                 });
             }
 
             function removeListener(listenerName)
             {
                 delete listeners[listenerName];
-                socket.removeListener(listenerName);
             }
 
 
             function reconnect()
             {
-                socket.connect();
+                dataStream = $websocket('ws://localhost:3000');
             }
 
             function disconnect()
             {
-                socket.emit('disconnect');
-                socket.disconnect();
+                dataStream.close({force: true});
             }
-
 
 
             return {

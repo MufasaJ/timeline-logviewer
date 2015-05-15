@@ -201,6 +201,10 @@
     font-weight: 500;
     height: 80vh;
 }
+.terminal pre{
+    background-color: #002b37;
+    color:#e2e6e7;
+}
 .divider:before {
     position: absolute;
     min-height: 600px;
