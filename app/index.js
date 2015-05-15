@@ -1,84 +1,77 @@
 (function ()
 {
     'use strict';
-    var io = require('socket.io')(process.env.PORT || 3000);
-    io.serveClient(false);
-    //TODO jest problem z timeoutem ponieważ one cały czas
-    // wysyłają dane chociaż sam sockect się rozłączył i przy kolejnym wejściu na stronę nakładają się one wysyłają podwojne dane'
-    var timeOut1, timeOut2;
-    var index = 1;
-    var mockPrimary = {
-        data: new Date().getTime(),
-        eventName: 'Mock',
-        shortDescription: 'Lorem ipsumd',
-        detail: 'Details',
-        primary: true,
-        type:'milestone'
-    };
-    var mockDanger = {
-        data: new Date().getTime(),
-        eventName: 'Mock',
-        shortDescription: 'Lorem ipsum',
-        detail: 'Details',
-        danger: true,
-        type:'milestone'
-    };
-    var mockWarning = {
-        data: new Date().getTime(),
-        eventName: 'Mock',
-        shortDescription: 'Lorem ipsum',
-        detail: 'Details',
-        warning: true,
-        type:'milestone'
-    };
+    var WebSocketServer = require('ws').Server;
+    var wss = new WebSocketServer({port: 3000});
+    var timeOut;
+    var index = 0;
+    var arrayWithLogs = ['**** START:Listing directory,Listing the contents of a directory\n' +
+                         'ls -al /usr/bin\n' +
+                         '-rwxr-xr-x 1 root wheel 13968 Sep 9 2014 dserr\n' +
+                         '-rwxr-xr-x 1 root wheel 29216 Sep 9 2014 dsexport\n' +
+                         '-rwxr-xr-x 1 root wheel 79664 Sep 9 2014 dsimport\n' +
+                         '-rwxr-xr-x 1 root wheel 23664 Sep 9 2014 dsmemberutil\n' +
+                         '-rwxr-xr-x 1 root wheel 14160 Sep 28 2014 dsymutil\n' +
+                         '-rwxr-xr-x 1 root wheel 19878 Feb 6 20:59 dtruss\n' +
+                         '-rwxr-xr-x 1 root wheel 19520 Nov 6 2014 du\n' +
+                         '-rwxr-xr-x 1 root wheel 14160 Sep 28 2014 dwarfdump\n' +
+                         '**** FINISH:Listing directory,Listing completed\n',
 
-    function mockMileston()
-    {
-        if (0 === index % 3) {
-            return mockPrimary;
-        } else if (1 === index % 3) {
-            return mockDanger;
-        } else {
-            return mockWarning;
-        }
+                         '???? START:Listing directory,Listing the contents of a directory\n' +
+                         'ls -al /usr/bin\n' +
+                         '-rwxr-xr-x 1 root wheel 13968 Sep 9 2014 dserr\n' +
+                         '-rwxr-xr-x 1 root wheel 29216 Sep 9 2014 dsexport\n' +
+                         '-rwxr-xr-x 1 root wheel 79664 Sep 9 2014 dsimport\n' +
+                         '-rwxr-xr-x 1 root wheel 23664 Sep 9 2014 dsmemberutil\n' +
+                         '-rwxr-xr-x 1 root wheel 14160 Sep 28 2014 dsymutil\n' +
+                         '-rwxr-xr-x 1 root wheel 19878 Feb 6 20:59 dtruss\n' +
+                         '-rwxr-xr-x 1 root wheel 19520 Nov 6 2014 du\n' +
+                         '-rwxr-xr-x 1 root wheel 14160 Sep 28 2014 dwarfdump\n' +
+                         '???? FINISH:Listing directory,Listing completed\n',
 
-    }
+                         '!!!! START:Listing directory,Listing the contents of a directory\n' +
+                         'ls -al /usr/bin\n' +
+                         '-rwxr-xr-x 1 root wheel 13968 Sep 9 2014 dserr\n' +
+                         '-rwxr-xr-x 1 root wheel 29216 Sep 9 2014 dsexport\n' +
+                         '-rwxr-xr-x 1 root wheel 79664 Sep 9 2014 dsimport\n' +
+                         '-rwxr-xr-x 1 root wheel 23664 Sep 9 2014 dsmemberutil\n' +
+                         '-rwxr-xr-x 1 root wheel 14160 Sep 28 2014 dsymutil\n' +
+                         '-rwxr-xr-x 1 root wheel 19878 Feb 6 20:59 dtruss\n' +
+                         '-rwxr-xr-x 1 root wheel 19520 Nov 6 2014 du\n' +
+                         '-rwxr-xr-x 1 root wheel 14160 Sep 28 2014 dwarfdump\n' +
+                         '!!!! FINISH:Listing directory,Listing completed\n'];
 
     function getRandomInt(min, max)
     {
         return Math.floor(Math.random() * (max - min + 1)) + min;
     }
 
-    function sendLogs(socket)
-    {
-        timeOut1 = setTimeout(function ()
-        {
-            socket.emit('logs', {log: 'Lorem impsum............log'});
-            sendLogs(socket);
-        }, getRandomInt(500, 1000))
-
-    }
 
     function sendMilestone(socket)
     {
-        timeOut2 = setTimeout(function ()
+        timeOut = setTimeout(function ()
         {
             index++;
-            socket.emit('milestone', mockMileston());
-            sendMilestone(socket);
+            if (wss._server._connections) {
+                console.log('send');
+                socket.send(arrayWithLogs[index % 3]);
+                sendMilestone(socket);
+            } else {
+                console.log('clear');
+                clearTimeout(timeOut)
+            }
         }, getRandomInt(1000, 3000))
     }
 
-    io.on('connection', function (socket)
+    wss.on('connection', function connection(socket)
     {
-        sendLogs(socket);
         sendMilestone(socket);
-        socket.on('disconnect', function ()
+        socket.on('close', function ()
         {
-            clearTimeout(timeOut1);
-            clearTimeout(timeOut2);
-            socket.disconnect();
-        });
+            console.log('close');
+            clearTimeout(timeOut);
+        })
     });
+
 
 })();
