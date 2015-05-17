@@ -11,6 +11,7 @@ var singApp = angular.module('singApp', [
     'ui.jq',
     'ui.event',
     'ui.bootstrap',
+    'angularMoment',
 
     // page-specific and demo. may be removed
     'angular-bootstrap-select',

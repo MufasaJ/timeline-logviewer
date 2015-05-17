@@ -11,13 +11,17 @@
 <div class="row">
     <div ng-class="{'col-xs-4 scroll':timeCtrl.showTerminal,'col-xs-12':!timeCtrl.showTerminal}">
         <ul ng-class="{'timeline-log':timeCtrl.showTerminal,'timeline':!timeCtrl.showTerminal}">
-            <li ng-repeat="event in timeCtrl.displayWhenHideTerminal track by $index" ng-if="event.type" ng-class="{'on-left': $odd && !timeCtrl.showTerminal}">
-                <span ng-class="{'event-icon-log':timeCtrl.showTerminal,'event-icon':!timeCtrl.showTerminal,
-                      'event-icon-primary':event.primary,'event-icon-warning':event.warning,'event-icon-danger':event.danger}">
+            <li ng-repeat="event in timeCtrl.displayWhenHideTerminal track by $index" ng-if="event.milestone"
+                ng-class="{'on-left': $odd && !timeCtrl.showTerminal}">
+                <span class="event-icon-{{ event.severity }}" ng-class="{'event-icon-log':timeCtrl.showTerminal,'event-icon':!timeCtrl.showTerminal}">
                     <i class="glyphicon glyphicon-pencil"></i>
                 </span>
-                <section class="event" ng-click="timeCtrl.displayTerminal()">
-                    <span class="time">{{event.data}}</span>
+                <section class="event">
+                    <span class="time">{{event.date | date:'medium'}}</span>
+                    <h4>{{ event.title }}</h4>
+
+                    <p>{{ event.description }}</p>
+                    <p ng-show="event.elapsedTime">Elapsed time: {{ event.elapsedTimeHumanized }} ({{ event.elapsedTime }}ms)</p>
                 </section>
             </li>
         </ul>
@@ -27,9 +31,7 @@
 
         <div class="terminal scroll">
             <div ng-repeat="event in timeCtrl.displayWhenHideTerminal track by $index">
-                <pre>
-                    {{event.data}}
-                </pre>
+                {{event.data}}
             </div>
         </div>
     </div>

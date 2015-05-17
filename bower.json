@@ -75,7 +75,8 @@
     "MetroJS": "https://github.com/drewgreenwell/MetroJS.git#b70806b32e070073c17677402e64ed909e24a6ef",
     "skycons": "https://github.com/darkskyapp/skycons.git#60d41374ea97c5da1f92622ddcecca6dd1d9beed",
     "ng-websocket": "~0.2.1",
-    "angular-websocket": "~1.0.9"
+    "angular-websocket": "~1.0.9",
+    "angular-moment": "~0.10.1"
   },
   "private": true,
   "ignore": [

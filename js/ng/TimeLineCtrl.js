@@ -1,7 +1,8 @@
 angular.module('app.controllers').controller('TimeLineCtrl',
-        ['$rootScope', '$scope', '$state', 'ListenerSocketIO', function ($rootScope, $scope, $state, ListenerSocketIO)
+        ['$rootScope', '$scope', '$state', 'ListenerSocketIO', 'moment', function ($rootScope, $scope, $state, ListenerSocketIO, moment)
         {
             var ctrl = this;
+            var milestones = {};
             this.displayWhenHideTerminal = [];
             this.events = [];
             $rootScope.$on('$stateChangeStart', function ()
@@ -21,29 +22,41 @@ angular.module('app.controllers').controller('TimeLineCtrl',
             {
                 ctrl.showTerminal = !ctrl.showTerminal;
             };
-            this.displayTerminal = function displayTerminal()
-            {
-                ctrl.showTerminal = true;
-            };
             function addMilestoneAndLogs(data)
             {
+                var logEntry = {
+                    date: data.timeStamp
+                };
                 if ('*' === data.data.charAt(0)) {
-                    data.primary = true;
+                    logEntry.severity = 'primary';
                 } else if ('?' === data.data.charAt(0)) {
-                    data.warning = true;
+                    logEntry.severity = 'warning';
                 } else if ('!' === data.data.charAt(0)) {
-                    data.danger = true;
+                    logEntry.severity = 'danger';
                 }
-                ctrl.displayWhenHideTerminal.unshift(data);
+                var milestoneStart = /((\*{4})|(\?{4})|(!{4})) START:(.*),(.*).*((\*{4})|(\?{4})|(!{4}))/;
+                var milestoneEnd = /((\*{4})|(\?{4})|(!{4})) FINISH:(.*),(.*).*((\*{4})|(\?{4})|(!{4}))/;
+                var match;
+                if (match = data.data.match(milestoneStart)) {
+                    logEntry.id = match[5];
+                    logEntry.title = 'START:' + match[5];
+                    logEntry.description = match[6];
+                    logEntry.milestone = true;
+                    milestones[logEntry.id] = logEntry;
+                } else if (match = data.data.match(milestoneEnd)) {
+                    logEntry.id = match[5];
+                    logEntry.title = 'FINISH:' + match[5];
+                    logEntry.description = match[6];
+                    logEntry.milestone = true;
+                    var startingMilestone = milestones[logEntry.id];
+                    if (startingMilestone) {
+                        logEntry.elapsedTime = logEntry.date - startingMilestone.date;
+                        logEntry.elapsedTimeHumanized = moment.duration(logEntry.elapsedTime/-1000, 'seconds').humanize();
+                    }
+                }
+                logEntry.data = data.data;
+                ctrl.displayWhenHideTerminal.push(logEntry);
             }
 
-            function init()
-            {
-                ListenerSocketIO.setListener('milestone', function (log)
-                {
-                    addMilestoneAndLogs(log);
-                });
-            }
-
-            init();
+            ListenerSocketIO.setListener('milestone', addMilestoneAndLogs);
         }]);
