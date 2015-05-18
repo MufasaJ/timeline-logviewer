@@ -3,8 +3,8 @@ angular.module('app.controllers').controller('TimeLineCtrl',
         {
             var ctrl = this;
             var milestones = {};
-            this.displayWhenHideTerminal = [];
-            this.events = [];
+            this.logs = [];
+            this.milestones = [];
             $rootScope.$on('$stateChangeStart', function ()
             {
                 if ('app.timeLine' === $state.current.name) {
@@ -43,6 +43,7 @@ angular.module('app.controllers').controller('TimeLineCtrl',
                     logEntry.description = match[6];
                     logEntry.milestone = true;
                     milestones[logEntry.id] = logEntry;
+                    ctrl.milestones.push(logEntry)
                 } else if (match = data.data.match(milestoneEnd)) {
                     logEntry.id = match[5];
                     logEntry.title = 'FINISH:' + match[5];
@@ -50,12 +51,16 @@ angular.module('app.controllers').controller('TimeLineCtrl',
                     logEntry.milestone = true;
                     var startingMilestone = milestones[logEntry.id];
                     if (startingMilestone) {
-                        logEntry.elapsedTime = logEntry.date - startingMilestone.date;
-                        logEntry.elapsedTimeHumanized = moment.duration(logEntry.elapsedTime/-1000, 'seconds').humanize();
+                        startingMilestone.title = logEntry.title;
+                        startingMilestone.description = logEntry.description;
+                        startingMilestone.elapsedTime = logEntry.date - startingMilestone.date;
+                        startingMilestone.elapsedTimeHumanized = moment.duration(logEntry.elapsedTime / -1000, 'seconds').humanize();
+                    } else {
+                        ctrl.milestones.push(logEntry)
                     }
                 }
                 logEntry.data = data.data;
-                ctrl.displayWhenHideTerminal.push(logEntry);
+                ctrl.logs.push(logEntry);
             }
 
             ListenerSocketIO.setListener('milestone', addMilestoneAndLogs);

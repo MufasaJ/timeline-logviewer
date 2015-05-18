@@ -9,10 +9,9 @@
     </button>
 </div>
 <div class="row">
-    <div ng-class="{'col-xs-4 scroll':timeCtrl.showTerminal,'col-xs-12':!timeCtrl.showTerminal}">
+    <div ng-class="{'col-xs-4 scroll':timeCtrl.showTerminal,'col-xs-12':!timeCtrl.showTerminal}" scroll-glue>
         <ul ng-class="{'timeline-log':timeCtrl.showTerminal,'timeline':!timeCtrl.showTerminal}">
-            <li ng-repeat="event in timeCtrl.displayWhenHideTerminal track by $index" ng-if="event.milestone"
-                ng-class="{'on-left': $odd && !timeCtrl.showTerminal}">
+            <li ng-repeat="event in timeCtrl.milestones track by $index" ng-if="event.milestone" ng-class="{'on-left': $odd && !timeCtrl.showTerminal}">
                 <span class="event-icon-{{ event.severity }}" ng-class="{'event-icon-log':timeCtrl.showTerminal,'event-icon':!timeCtrl.showTerminal}">
                     <i class="glyphicon glyphicon-pencil"></i>
                 </span>
@@ -21,6 +20,7 @@
                     <h4>{{ event.title }}</h4>
 
                     <p>{{ event.description }}</p>
+
                     <p ng-show="event.elapsedTime">Elapsed time: {{ event.elapsedTimeHumanized }} ({{ event.elapsedTime }}ms)</p>
                 </section>
             </li>
@@ -29,8 +29,8 @@
     <div class="col-xs-8" ng-if="timeCtrl.showTerminal">
         <a class="terminal divider" ng-click="timeCtrl.hideTerminal()"></a>
 
-        <div class="terminal scroll">
-            <div ng-repeat="event in timeCtrl.displayWhenHideTerminal track by $index">
+        <div class="terminal scroll" scroll-glue>
+            <div ng-repeat="event in timeCtrl.logs track by $index">
                 {{event.data}}
             </div>
         </div>

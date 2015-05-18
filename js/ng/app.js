@@ -11,6 +11,7 @@ var singApp = angular.module('singApp', [
     'ui.jq',
     'ui.event',
     'ui.bootstrap',
+    'luegg.directives',
     'angularMoment',
 
     // page-specific and demo. may be removed

@@ -76,7 +76,8 @@
     "skycons": "https://github.com/darkskyapp/skycons.git#60d41374ea97c5da1f92622ddcecca6dd1d9beed",
     "ng-websocket": "~0.2.1",
     "angular-websocket": "~1.0.9",
-    "angular-moment": "~0.10.1"
+    "angular-moment": "~0.10.1",
+    "angular-scroll-glue": "~2.0.5"
   },
   "private": true,
   "ignore": [
