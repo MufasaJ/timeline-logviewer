@@ -18,7 +18,8 @@ angular.module('app.services').factory('ListenerSocketIO',
 
             function reconnect()
             {
-                dataStream = $websocket('ws://timelineserver.herokuapp.com');
+                //dataStream = $websocket('ws://timelineserver.herokuapp.com');
+                dataStream = $websocket('ws://146.148.125.2/v1/ws/run/test1');
             }
 
             function disconnect()
